@@ -1,0 +1,18 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+venv/
+*.db
+*.sqlite3
+*.log
+.DS_Store
+
+# Frontend
+node_modules/
+frontend/dist/
+frontend/.env.local
+
+# Docker
+.docker/

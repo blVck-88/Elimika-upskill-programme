@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: elimika-backend-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - elimika-dev-data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/elimika.db
+      - SECRET_KEY=dev-only-secret-key
+    networks:
+      - elimika-net
+
+volumes:
+  elimika-dev-data:
+
+networks:
+  elimika-net:

@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: elimika-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - elimika-data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:////app/data/elimika.db
+      - SECRET_KEY=change-me-in-production-use-a-strong-random-key
+    networks:
+      - elimika-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: elimika-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - elimika-net
+
+volumes:
+  elimika-data:
+    name: elimika-sqlite-data
+
+networks:
+  elimika-net:
+    name: elimika-network
